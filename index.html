@@ -44,14 +44,23 @@
   #menuUI > * { pointer-events:auto; }
   #titleWrap { text-align:center; margin-top:4px; }
   #byline {
-    font-size:11px; letter-spacing:2px; margin-bottom:14px;
-    color:rgba(201,227,255,.8); text-shadow:0 1px 4px rgba(0,0,0,.6);
-    font-weight:600; font-style:italic;
+    font-size:13px; letter-spacing:2px; margin-bottom:14px;
+    color:#fff; text-shadow:0 2px 4px rgba(0,0,0,.95), 0 0 8px rgba(0,0,0,.8);
+    font-weight:700; font-style:italic;
+    background:rgba(0,0,0,.4); padding:5px 14px;
+    border-radius:8px; backdrop-filter:blur(4px);
+    border:1px solid rgba(255,255,255,.15);
+    display:inline-block;
   }
   #title { font-size:clamp(34px, 11vw, 64px); font-weight:900; letter-spacing:6px;
     color:#fff; text-shadow:0 4px 0 #2b3a55, 0 8px 24px rgba(0,0,0,.55); line-height:1; }
-  #subtitle { margin-top:6px; font-size:clamp(11px,3.2vw,15px); letter-spacing:5px;
-    color:#c9e3ff; text-shadow:0 2px 8px rgba(0,0,0,.6); font-weight:700; }
+  #subtitle {
+    margin-top:8px; font-size:clamp(13px,3.8vw,17px); letter-spacing:5px;
+    color:#fff; text-shadow:0 2px 6px rgba(0,0,0,.95);
+    background:rgba(0,0,0,.35); padding:4px 14px;
+    border-radius:8px; backdrop-filter:blur(4px);
+    font-weight:800; display:inline-block;
+  }
 
   #btnLeaderboard {
     position:fixed; top:max(14px, env(safe-area-inset-top)); left:16px;
@@ -69,9 +78,13 @@
     background:rgba(12,18,30,.55); backdrop-filter:blur(8px);
     border:1px solid rgba(255,255,255,.18);
     padding:9px 16px; border-radius:999px; color:#ffe14d; font-weight:900;
-    font-size:16px; z-index:20; pointer-events:none;
+    font-size:16px; z-index:20;
     display:flex; align-items:center;
+    pointer-events:auto; cursor:pointer;
+    user-select:none; -webkit-user-select:none;
+    transition:transform .15s;
   }
+  #coinMenu:active { transform:scale(.95); }
 
   #menuButtons {
     display:flex; flex-direction:column; align-items:center; gap:14px; width:100%;
@@ -159,7 +172,12 @@
     border:1px solid rgba(255,255,255,.18);
     padding:9px 18px; border-radius:999px; color:#ffe14d; font-weight:900; font-size:18px;
     display:flex; align-items:center;
+    pointer-events:auto; cursor:pointer;
+    user-select:none; -webkit-user-select:none;
+    transition:transform .15s;
   }
+  #hudCoins:active { transform:scale(.95); }
+
   #btnBack {
     position:absolute; top:max(14px, env(safe-area-inset-top)); right:16px;
     width:46px; height:46px; border-radius:50%; font-size:20px;
@@ -202,6 +220,60 @@
   }
   #btnPoop:active { transform:scale(.93) translateY(4px); box-shadow:0 3px 0 rgba(0,0,0,.35); }
   #btnPoop.empty { filter:grayscale(1) brightness(.7); }
+
+  /* Мобильные кнопки управления */
+  .mobile-btn {
+    position:absolute;
+    width:58px; height:58px;
+    border-radius:50%;
+    background:rgba(20,28,45,.75);
+    border:2px solid rgba(255,255,255,.35);
+    color:#fff;
+    font-size:24px; font-weight:900;
+    display:flex; align-items:center; justify-content:center;
+    pointer-events:auto; cursor:pointer;
+    backdrop-filter:blur(6px);
+    box-shadow:0 4px 0 rgba(0,0,0,.3), 0 6px 16px rgba(0,0,0,.3);
+    transition:transform .08s, background .08s;
+    user-select:none; -webkit-user-select:none;
+    touch-action:none;
+    z-index:20;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .mobile-btn:active, .mobile-btn.pressed {
+    transform:scale(0.88);
+    background:rgba(90,120,180,.9);
+  }
+  .mobile-btn .label {
+    position:absolute;
+    bottom:-18px;
+    left:50%; transform:translateX(-50%);
+    font-size:9px; font-weight:700;
+    color:#fff; text-shadow:0 1px 2px #000;
+    white-space:nowrap; letter-spacing:1px;
+    pointer-events:none;
+    opacity:.85;
+  }
+
+  #btnUp { right: calc(max(20px, env(safe-area-inset-right)) + 19px); bottom: 136px; }
+  #btnDown { right: calc(max(20px, env(safe-area-inset-right)) + 19px); bottom: 200px; }
+  #btnSit { right: calc(max(20px, env(safe-area-inset-right)) + 19px); bottom: 264px; }
+  #btnFight { right: calc(max(20px, env(safe-area-inset-right)) + 19px); bottom: 328px; }
+
+  #btnFight.duel-ready {
+    border-color: #ff4444;
+    box-shadow: 0 0 20px rgba(255,68,68,.8), 0 4px 0 rgba(0,0,0,.3);
+    animation: pulseFight 1s ease-in-out infinite;
+  }
+  @keyframes pulseFight {
+    0%, 100% { box-shadow: 0 0 20px rgba(255,68,68,.6), 0 4px 0 rgba(0,0,0,.3); }
+    50% { box-shadow: 0 0 32px rgba(255,68,68,1), 0 4px 0 rgba(0,0,0,.3); }
+  }
+
+  /* Скрываем мобильные кнопки на устройствах с мышью */
+  @media (hover: hover) and (pointer: fine) {
+    .mobile-btn { display: none; }
+  }
 
   #joyBase {
     position:absolute; width:130px; height:130px; border-radius:50%;
@@ -337,13 +409,19 @@
 <div id="gameUI">
   <div id="hudCoins"><span class="coin-ico"></span><span id="hudCoinsVal">0</span></div>
   <button id="btnBack">✕</button>
-  <div id="hint">Space/Ctrl — высота • E — какать • Q — сесть • F — драка • ПКМ — камера</div>
+  <div id="hint">Space/Ctrl — высота • E — какать • Q — сесть • F — драка</div>
   <div id="ammoWrap">
     <div id="ammoTxt">💩 10 / 10</div>
     <div id="ammoBar"><div id="ammoFill"></div></div>
   </div>
   <div id="joyBase"><div id="joyKnob"></div></div>
   <button id="btnPoop">💩</button>
+  
+  <!-- Мобильные кнопки управления -->
+  <button class="mobile-btn" id="btnUp" aria-label="Вверх">▲<span class="label">ВВЕРХ</span></button>
+  <button class="mobile-btn" id="btnDown" aria-label="Вниз">▼<span class="label">ВНИЗ</span></button>
+  <button class="mobile-btn" id="btnSit" aria-label="Сесть">🪑<span class="label">СЕСТЬ</span></button>
+  <button class="mobile-btn" id="btnFight" aria-label="Драка">⚔️<span class="label">ДРАКА</span></button>
 </div>
 
 <div id="duelUI">
@@ -359,7 +437,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/utils/BufferGeometryUtils.js"></script>
 
-<!-- Firebase SDK (compat версия для работы с обычным скриптом) -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -382,15 +459,12 @@ function startAmbient() {
   const osc = audioCtx.createOscillator();
   const gain = audioCtx.createGain();
   const filter = audioCtx.createBiquadFilter();
-  
   osc.type = 'sawtooth'; osc.frequency.value = 50;
   filter.type = 'lowpass'; filter.frequency.value = 150;
   gain.gain.value = 0.05;
-  
   osc.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination);
   osc.start();
   ambientHum = { osc, gain };
-  
   setInterval(() => { if (Math.random() > 0.6) playSound('bird'); }, 2000);
   setInterval(() => { if (Math.random() > 0.8) playSound('horn'); }, 5000);
 }
@@ -428,7 +502,7 @@ function playSound(type) {
   }
 }
 
-/* ===== FIREBASE ИНИЦИАЛИЗАЦИЯ ===== */
+/* ===== FIREBASE ===== */
 const firebaseConfig = {
   apiKey: "AIzaSyBWMfDJ-4trQA8UjiK2hcLWHQMRw8Uro_8",
   authDomain: "poop-pigeon.firebaseapp.com",
@@ -445,17 +519,11 @@ try {
   fbApp = firebase.initializeApp(firebaseConfig);
   fbDb = firebase.database();
   fbAuth = firebase.auth();
-  
-  // Анонимный вход (нужен для правил безопасности)
   fbAuth.signInAnonymously().then((cred) => {
     currentUser = cred.user;
     console.log("Авторизован анонимно, UID:", currentUser.uid);
-  }).catch((error) => {
-    console.error("Ошибка авторизации:", error);
-  });
-} catch(e) {
-  console.error("Ошибка Firebase:", e);
-}
+  }).catch((error) => { console.error("Ошибка авторизации:", error); });
+} catch(e) { console.error("Ошибка Firebase:", e); }
 
 /* ===== СОХРАНЕНИЕ ===== */
 const SAVE_KEY = 'pigeonCity_v12';
@@ -474,12 +542,9 @@ if (typeof save.playerName !== 'string') save.playerName = '';
 if (typeof save.totalHits !== 'number') save.totalHits = 0;
 function persist() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(save)); } catch (e) {} }
 
-/* ===== ОТПРАВКА СЧЕТА НА СЕРВЕР ===== */
 let syncTimeout = null;
 function syncScoreToCloud() {
   if (!save.playerName || !currentUser) return;
-  
-  // Чтобы не спамить сервер, отправляем не чаще чем раз в 2 секунды
   if (syncTimeout) return;
   syncTimeout = setTimeout(() => {
     syncTimeout = null;
@@ -492,7 +557,6 @@ function syncScoreToCloud() {
   }, 2000);
 }
 
-/* ===== СПИСОК ИГРОКОВ ===== */
 let REAL_PLAYERS = []; 
 
 /* ===== СКИНЫ ===== */
@@ -554,7 +618,6 @@ function onResize() {
 }
 window.addEventListener('resize', onResize);
 
-/* ===== ТЕКСТУРЫ ===== */
 function makeWindowTexture() {
   const cv = document.createElement('canvas'); cv.width = cv.height = 128;
   const ctx = cv.getContext('2d');
@@ -606,7 +669,6 @@ function makeRoadTexture() {
   const t = new THREE.CanvasTexture(cv); t.wrapS = t.wrapT = THREE.RepeatWrapping; return t;
 }
 
-/* ===== ГОЛУБЬ ===== */
 function makePigeon(skinData) {
   const g = new THREE.Group();
   const matBody = new THREE.MeshStandardMaterial({ color: skinData.body, roughness: 0.75, metalness: 0.08 });
@@ -663,7 +725,6 @@ function makePigeon(skinData) {
   return { group: g, head, lwing, rwing, legs };
 }
 
-/* ===== ФОНТАН ===== */
 const FOUNTAIN = { x: 0, z: 0, radius: 5, bowlY: 5.55, topY: 6.15, basinY: 1.3 };
 function buildFountain(scene, x, z) {
   const g = new THREE.Group();
@@ -699,7 +760,6 @@ function buildFountain(scene, x, z) {
   scene.add(g); return g;
 }
 
-/* ===== МЕНЮ-СЦЕНА ===== */
 const menuScene = new THREE.Scene();
 menuScene.background = new THREE.Color(0x8fc4f0);
 menuScene.fog = new THREE.Fog(0x8fc4f0, 35, 100);
@@ -799,7 +859,6 @@ function buildMenuPigeon() {
 }
 buildMenuPigeon();
 
-/* ===== ИГРОВАЯ СЦЕНА ===== */
 const gameScene = new THREE.Scene();
 gameScene.fog = new THREE.Fog(0xc0d8ea, 200, 600);
 
@@ -1194,7 +1253,7 @@ function endDuel(win) {
     popText(gamePigeon.position, '+20');
     gameScene.remove(duelState.npc.mesh); npcPigeons.splice(npcPigeons.indexOf(duelState.npc), 1);
     setTimeout(spawnNpcPigeon, 5000);
-    syncScoreToCloud(); // Отправляем счет на сервер
+    syncScoreToCloud();
   } else { 
     save.coins = Math.max(0, save.coins - 20);
     persist(); refreshCoins();
@@ -1314,7 +1373,6 @@ function renderUpgrades() {
   });
 }
 
-// Загрузка реальных игроков из Firebase
 function renderLeaderboard() {
   const list = document.getElementById('leaderboardList'); 
   list.innerHTML = '<div style="color:#8fa4c0; text-align:center; margin-top:20px;">Загрузка...</div>';
@@ -1334,10 +1392,7 @@ function renderLeaderboard() {
         REAL_PLAYERS.push(data[key]);
       }
     }
-    
-    // Сортируем по монетам
     REAL_PLAYERS.sort((a, b) => b.coins - a.coins);
-    
     list.innerHTML = '';
     lbHint.textContent = "Топ игроков со всего мира";
     
@@ -1354,7 +1409,7 @@ function renderLeaderboard() {
     
   }).catch((error) => {
     console.error("Ошибка загрузки лидеров:", error);
-    list.innerHTML = '<div style="color:#ff4444; text-align:center; margin-top:20px;">Ошибка загрузки таблицы. Проверьте интернет.</div>';
+    list.innerHTML = '<div style="color:#ff4444; text-align:center; margin-top:20px;">Ошибка загрузки. Проверьте интернет.</div>';
     lbHint.textContent = "Ошибка подключения";
   });
 }
@@ -1376,16 +1431,9 @@ document.getElementById('btnSaveName').onclick = () => {
   save.playerName = name; persist(); 
   document.getElementById('nameFormWrap').classList.remove('show'); 
   document.getElementById('leaderboardList').classList.add('show'); 
-  
-  // Отправляем первый раз на сервер
   if (currentUser) {
-    fbDb.ref('leaderboard/' + currentUser.uid).set({
-      name: save.playerName,
-      coins: save.coins,
-      hits: save.totalHits || 0
-    });
+    fbDb.ref('leaderboard/' + currentUser.uid).set({ name: save.playerName, coins: save.coins, hits: save.totalHits || 0 });
   }
-  
   renderLeaderboard();
 };
 document.getElementById('nameInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') document.getElementById('btnSaveName').click(); });
@@ -1395,6 +1443,33 @@ btnLeaderboard.onclick = () => openLeaderboard();
 function openPanel(p) { initAudio(); renderSkins(); renderUpgrades(); p.classList.add('open'); }
 document.getElementById('btnSkins').onclick = () => openPanel(skinsPanel);
 document.getElementById('btnUpgrades').onclick = () => openPanel(upPanel);
+
+/* ===== СКРЫТЫЕ КОДЫ: 3 тапа по монетам ===== */
+let coinTapCount = 0;
+let coinTapTimer = null;
+function handleCoinTap() {
+  coinTapCount++;
+  clearTimeout(coinTapTimer);
+  coinTapTimer = setTimeout(() => { coinTapCount = 0; }, 1200);
+  if (coinTapCount >= 3) {
+    coinTapCount = 0;
+    initAudio();
+    cheatPanel.classList.add('open');
+    setTimeout(() => document.getElementById('cheatInput').focus(), 100);
+  }
+}
+// И в меню, и в игре
+coinMenu.addEventListener('pointerdown', handleCoinTap);
+document.getElementById('hudCoins').addEventListener('pointerdown', handleCoinTap);
+
+// Также оставляем Ctrl+Shift+V для удобства
+window.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.shiftKey && e.code === 'KeyV') {
+    e.preventDefault();
+    cheatPanel.classList.add('open');
+    setTimeout(() => document.getElementById('cheatInput').focus(), 100);
+  }
+});
 
 document.getElementById('btnSaveCode').onclick = () => {
   initAudio();
@@ -1420,20 +1495,11 @@ document.getElementById('btnLoadCode').onclick = () => {
       save = decoded;
       save.up = Object.assign({}, DEFAULT_SAVE.up, save.up || {});
       if (!Array.isArray(save.owned)) save.owned = ['classic'];
-      persist();
-      refreshCoins();
-      renderSkins();
-      renderUpgrades();
-      buildMenuPigeon();
-      buildGamePigeon();
+      persist(); refreshCoins(); renderSkins(); renderUpgrades(); buildMenuPigeon(); buildGamePigeon();
       alert('Прогресс успешно загружен!');
       savePanel.classList.remove('open');
-    } else {
-      alert('Неверный формат кода.');
-    }
-  } catch (e) {
-    alert('Ошибка при загрузке: ' + e.message);
-  }
+    } else { alert('Неверный формат кода.'); }
+  } catch (e) { alert('Ошибка при загрузке: ' + e.message); }
 };
 
 document.getElementById('btnApplyCheat').onclick = () => {
@@ -1451,19 +1517,20 @@ document.getElementById('btnApplyCheat').onclick = () => {
   } else if (code === 'infiniteammo') {
     infiniteAmmo = true;
     alert('Код активирован: Бесконечный помёт!');
+  } else if (code === 'moneyrain') {
+    save.coins += 5000; persist(); refreshCoins();
+    alert('Код активирован: +5000 монет!');
+  } else if (code === 'developer') {
+    save.owned = SKINS.map(s => s.id); 
+    for (let key in save.up) save.up[key] = 8;
+    save.coins += 10000;
+    persist(); refreshCoins(); renderSkins(); renderUpgrades();
+    alert('Разработческий код: всё разблокировано +10000 монет!');
   } else {
     alert('Неверный код!');
   }
   document.getElementById('cheatInput').value = '';
 };
-
-window.addEventListener('keydown', e => {
-  if (e.ctrlKey && e.shiftKey && e.code === 'KeyV') {
-    e.preventDefault();
-    cheatPanel.classList.add('open');
-    setTimeout(() => document.getElementById('cheatInput').focus(), 100);
-  }
-});
 
 document.querySelectorAll('[data-close]').forEach(b => { 
   b.onclick = () => { 
@@ -1493,8 +1560,9 @@ function exitToMenu() {
   for (const p of poops) gameScene.remove(p.mesh); poops.length = 0;
   for (const p of particles) gameScene.remove(p.mesh); particles.length = 0;
   for (const p of duelProjectiles) gameScene.remove(p.mesh); duelProjectiles.length = 0;
+  for (const k in keys) keys[k] = false;
   buildMenuPigeon(); refreshCoins();
-  syncScoreToCloud(); // Сохраняем прогресс при выходе
+  syncScoreToCloud();
 }
 
 function enterGame() {
@@ -1524,11 +1592,7 @@ window.addEventListener('keydown', e => {
   if (e.code === 'Space') e.preventDefault();
   if (e.code === 'KeyQ' && mode === 'game' && !e.repeat) { trySit(); return; }
   if (e.code === 'KeyE' && mode === 'game' && !e.repeat) { firePoop(); return; }
-  if (e.code === 'KeyF' && mode === 'game' && !e.repeat) {
-    let nearest = null, minDist = 15;
-    for (const npc of npcPigeons) { const d = gamePigeon.position.distanceTo(npc.mesh.position); if (d < minDist) { minDist = d; nearest = npc; } }
-    if (nearest) startDuel(nearest); return;
-  }
+  if (e.code === 'KeyF' && mode === 'game' && !e.repeat) { tryFight(); return; }
   keys[e.code] = true;
 });
 window.addEventListener('keyup', e => { keys[e.code] = false; });
@@ -1543,6 +1607,59 @@ function readKeyboard() {
   return { x, y };
 }
 
+/* ===== МОБИЛЬНЫЕ КНОПКИ ===== */
+const btnUp = document.getElementById('btnUp');
+const btnDown = document.getElementById('btnDown');
+const btnSit = document.getElementById('btnSit');
+const btnFight = document.getElementById('btnFight');
+
+btnUp.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  btnUp.classList.add('pressed');
+  try { btnUp.setPointerCapture(e.pointerId); } catch(err) {}
+  if (mode === 'game') keys['Space'] = true;
+});
+btnUp.addEventListener('pointerup', e => {
+  e.preventDefault();
+  btnUp.classList.remove('pressed');
+  keys['Space'] = false;
+});
+btnUp.addEventListener('pointercancel', () => { btnUp.classList.remove('pressed'); keys['Space'] = false; });
+
+btnDown.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  btnDown.classList.add('pressed');
+  try { btnDown.setPointerCapture(e.pointerId); } catch(err) {}
+  if (mode === 'game') keys['ControlLeft'] = true;
+});
+btnDown.addEventListener('pointerup', e => {
+  e.preventDefault();
+  btnDown.classList.remove('pressed');
+  keys['ControlLeft'] = false;
+});
+btnDown.addEventListener('pointercancel', () => { btnDown.classList.remove('pressed'); keys['ControlLeft'] = false; });
+
+btnSit.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (mode === 'game') trySit();
+});
+
+btnFight.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (mode === 'game') tryFight();
+});
+
+function tryFight() {
+  if (sitting || duelState) return;
+  let nearest = null, minDist = 15;
+  for (const npc of npcPigeons) {
+    const d = gamePigeon.position.distanceTo(npc.mesh.position);
+    if (d < minDist) { minDist = d; nearest = npc; }
+  }
+  if (nearest) startDuel(nearest);
+}
+
+/* ===== ДЖОЙСТИК ===== */
 const joyBase = document.getElementById('joyBase'); const joyKnob = document.getElementById('joyKnob');
 const joy = { active: false, id: null, ox: 0, oy: 0, x: 0, y: 0 }; const JOY_R = 60;
 
@@ -1698,6 +1815,15 @@ function updateGame(dt) {
   lampLights.forEach(l => l.intensity = isNight ? 1.5 : 0);
   buildingWindowMats.forEach(m => m.emissiveIntensity = isNight ? 1.0 : 0.0);
   cars.forEach(c => { c.mesh.userData.headlights.forEach(h => h.material.emissiveIntensity = isNight ? 1.0 : 0.0); });
+
+  // Подсветка кнопки драки если враг рядом
+  let nearestNpc = null, minDist = 15;
+  for (const npc of npcPigeons) {
+    const d = gamePigeon.position.distanceTo(npc.mesh.position);
+    if (d < minDist) { minDist = d; nearestNpc = npc; }
+  }
+  if (!duelState && nearestNpc) btnFight.classList.add('duel-ready');
+  else btnFight.classList.remove('duel-ready');
 
   if (duelState) {
     duelState.shootTimer -= dt;
@@ -1943,7 +2069,7 @@ function hitTarget(targetPos, st) {
   burst(new THREE.Vector3(targetPos.x, targetPos.y + 1.5, targetPos.z), 4);
   popText(new THREE.Vector3(targetPos.x, targetPos.y + 3.0, targetPos.z), (isCrit ? 'КРИТ! +' : '+') + gain);
   
-  syncScoreToCloud(); // Синхронизируем с облаком при каждом попадании (с задержкой)
+  syncScoreToCloud();
 }
 
 function animate() {
