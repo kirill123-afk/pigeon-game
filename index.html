@@ -6,9 +6,29 @@
 <title>Голубь: Городской Террор</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html, body { width:100%; height:100%; overflow:hidden; background:#0b1020;
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; user-select:none; }
-  #c { position:fixed; inset:0; display:block; }
+  html {
+    width:100%; height:100%; overflow:hidden;
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+    touch-action: manipulation;
+  }
+  body {
+    width:100%; height:100%; overflow:hidden;
+    background:#0b1020;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    overscroll-behavior: none;
+  }
+  input, textarea {
+    user-select: text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+  }
+  #c { position:fixed; inset:0; display:block; touch-action: none; }
 
   .btn {
     border:none; cursor:pointer; border-radius:16px; font-weight:800; color:#12161f;
@@ -106,7 +126,7 @@
     margin-bottom:4px; text-shadow:0 3px 0 #2b3a55; }
   .panel .hint { color:#8fa4c0; text-align:center; font-size:13px; margin-bottom:16px; }
   .list { flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:12px;
-    max-width:640px; width:100%; margin:0 auto; padding-bottom:16px; -webkit-overflow-scrolling:touch; }
+    max-width:640px; width:100%; margin:0 auto; padding-bottom:16px; -webkit-overflow-scrolling:touch; touch-action: pan-y; }
   .card { display:flex; align-items:center; gap:14px;
     background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
     border-radius:18px; padding:12px 14px; }
@@ -178,13 +198,20 @@
   }
   #hudCoins:active { transform:scale(.95); }
 
+  /* Кнопка "В МЕНЮ" - pill-стиль */
   #btnBack {
     position:absolute; top:max(14px, env(safe-area-inset-top)); right:16px;
-    width:46px; height:46px; border-radius:50%; font-size:20px;
+    height:44px; border-radius:22px; padding:0 22px;
+    font-size:13px; font-weight:900; letter-spacing:1.5px;
     pointer-events:auto; display:flex; align-items:center; justify-content:center;
-    background:rgba(12,18,30,.6); border:1px solid rgba(255,255,255,.2);
+    background:rgba(12,18,30,.75); border:1px solid rgba(255,255,255,.28);
     color:#fff; cursor:pointer; backdrop-filter:blur(8px);
+    box-shadow: 0 4px 0 rgba(0,0,0,.4), 0 6px 16px rgba(0,0,0,.3);
+    transition: transform .1s, box-shadow .1s;
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
   }
+  #btnBack:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.4); }
 
   #hint {
     position:absolute; top:max(70px, calc(env(safe-area-inset-top) + 56px)); left:50%;
@@ -269,8 +296,37 @@
     50% { box-shadow: 0 0 32px rgba(255,68,68,1), 0 4px 0 rgba(0,0,0,.3); }
   }
 
+  /* Скрыть мобильные кнопки на устройствах с мышью */
   @media (hover: hover) and (pointer: fine) {
     .mobile-btn { display: none; }
+  }
+
+  /* ЛАНДШАФТНЫЙ РЕЖИМ НА ТЕЛЕФОНЕ - кнопки вписываются в экран */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .mobile-btn { width:44px; height:44px; font-size:18px; border-width:1.5px; }
+    .mobile-btn .label { display: none; }
+    #btnUp { right: calc(max(16px, env(safe-area-inset-right)) + 12px); bottom: 90px; }
+    #btnDown { right: calc(max(16px, env(safe-area-inset-right)) + 12px); bottom: 140px; }
+    #btnSit { right: calc(max(16px, env(safe-area-inset-right)) + 12px); bottom: 190px; }
+    #btnFight { right: calc(max(16px, env(safe-area-inset-right)) + 12px); bottom: 240px; }
+    #btnPoop { width:68px; height:68px; font-size:30px; right: max(16px, env(safe-area-inset-right)); bottom: 16px; }
+    #ammoWrap { bottom: 8px; width: min(42vw, 200px); }
+    #ammoBar { height: 9px; }
+    #ammoTxt { font-size: 12px; margin-bottom: 3px; }
+    #hint { display: none; }
+    #hudCoins { padding: 6px 14px; font-size: 14px; top: max(10px, env(safe-area-inset-top)); }
+    #btnBack { height: 38px; padding: 0 16px; font-size: 12px; top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); }
+    #btnLeaderboard { padding: 8px 12px; font-size: 12px; top: max(10px, env(safe-area-inset-top)); left: max(10px, env(safe-area-inset-left)); }
+    #coinMenu { padding: 6px 14px; font-size: 14px; top: max(10px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); display: none; }
+  }
+
+  /* Очень маленькие экраны */
+  @media (max-height: 400px) {
+    #btnUp { bottom: 80px; }
+    #btnDown { bottom: 125px; }
+    #btnSit { bottom: 170px; }
+    #btnFight { bottom: 215px; }
+    #btnPoop { width: 60px; height: 60px; font-size: 26px; }
   }
 
   #joyBase {
@@ -403,7 +459,7 @@
 
 <div id="gameUI">
   <div id="hudCoins"><span class="coin-ico"></span><span id="hudCoinsVal">0</span></div>
-  <button id="btnBack">✕</button>
+  <button id="btnBack">В МЕНЮ</button>
   <div id="hint">Space/Ctrl — высота • E — какать • Q — сесть • F — драка</div>
   <div id="ammoWrap">
     <div id="ammoTxt">💩 10 / 10</div>
@@ -435,6 +491,24 @@
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
 <script>
+/* ===== ЗАЩИТА ОТ ЗУМА И ВЫДЕЛЕНИЯ ===== */
+document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
+document.addEventListener('gesturechange', e => e.preventDefault(), { passive: false });
+document.addEventListener('gestureend', e => e.preventDefault(), { passive: false });
+
+let lastTouchEndTime = 0;
+document.addEventListener('touchend', (e) => {
+  const now = Date.now();
+  if (now - lastTouchEndTime <= 300) e.preventDefault();
+  lastTouchEndTime = now;
+}, { passive: false });
+
+document.addEventListener('touchmove', (e) => {
+  if (e.touches.length > 1) e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('contextmenu', e => e.preventDefault());
+
 /* ===== АУДИО ===== */
 let audioCtx = null;
 let ambientHum = null;
@@ -517,7 +591,7 @@ try {
 } catch(e) { console.error("Ошибка Firebase:", e); }
 
 /* ===== СОХРАНЕНИЕ ===== */
-const SAVE_KEY = 'pigeonCity_v13';
+const SAVE_KEY = 'pigeonCity_v14';
 const DEFAULT_SAVE = {
   coins: 0, skin: 'classic', owned: ['classic'],
   up: { capacity: 0, regen: 0, speed: 0, luck: 0, radius: 0, crit: 0 },
@@ -687,11 +761,9 @@ catch (e) {
   catch (e2) { document.body.innerHTML = '<div style="color:#fff;padding:40px;text-align:center;font-family:sans-serif;"><h1>Ошибка</h1><p>WebGL не поддерживается.</p></div>'; throw e2; }
 }
 
-// КЛЮЧЕВАЯ ОПТИМИЗАЦИЯ: pixelRatio 1 на мобиле (4-9x меньше пикселей)
 const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) || window.innerWidth < 768;
 renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
-// КЛЮЧЕВАЯ ОПТИМИЗАЦИЯ: отключены тени
 renderer.shadowMap.enabled = false;
 
 const clock = new THREE.Clock();
@@ -704,7 +776,6 @@ function onResize() {
 }
 window.addEventListener('resize', onResize);
 
-// ОБЩАЯ текстура окон (не клонируется!)
 const winTexShared = (() => {
   const cv = document.createElement('canvas'); cv.width = cv.height = 128;
   const ctx = cv.getContext('2d');
@@ -761,15 +832,11 @@ function makeRoadTexture() {
 function makePigeon(skinData) {
   const g = new THREE.Group();
   
-  // Если у скина есть текстура — используем её для тела
   let matBody;
   if (skinData.texture) {
     const tex = makeSkinTexture(skinData.texture);
     matBody = new THREE.MeshStandardMaterial({ 
-      color: 0xffffff, 
-      map: tex, 
-      roughness: 0.7, 
-      metalness: 0.1,
+      color: 0xffffff, map: tex, roughness: 0.7, metalness: 0.1,
       emissive: skinData.emissive || 0x000000,
       emissiveIntensity: skinData.emissive ? 0.4 : 0
     });
@@ -859,7 +926,7 @@ function buildFountain(scene, x, z) {
   scene.add(g); return g;
 }
 
-/* ===== МЕНЮ-СЦЕНА (упрощена) ===== */
+/* ===== МЕНЮ-СЦЕНА ===== */
 const menuScene = new THREE.Scene();
 menuScene.background = new THREE.Color(0x8fc4f0);
 menuScene.fog = new THREE.Fog(0x8fc4f0, 35, 100);
@@ -890,13 +957,18 @@ menuSW1.rotation.x = -Math.PI / 2; menuSW1.position.set(0, 0.03, -7.5); menuScen
 const menuSW2 = new THREE.Mesh(new THREE.PlaneGeometry(100, 5), menuSidewalkMat);
 menuSW2.rotation.x = -Math.PI / 2; menuSW2.position.set(0, 0.03, -22.5); menuScene.add(menuSW2);
 
-const buildingPalette = [0xd9dde3, 0xc3ccd6, 0xb0bac6, 0xe2d6c4, 0xc9d3c4, 0xa9b4c2, 0xe8c9a0, 0xb8c4b0];
+// Меню-здания с КРЫШАМИ
 const sharedWinMat = new THREE.MeshStandardMaterial({ color: 0xffffff, map: winTexShared, roughness: 0.9 });
+const sharedRoofMat = new THREE.MeshStandardMaterial({ color: 0x5a6270, roughness: 0.95 });
 for (let i = -5; i <= 5; i++) {
   const w = 8 + Math.random() * 4, h = 15 + Math.random() * 15;
   const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, 10), sharedWinMat);
   b.position.set(i * 12, h/2, -28);
   menuScene.add(b);
+  // Крыша
+  const roof = new THREE.Mesh(new THREE.BoxGeometry(w + 1, 1.2, 11), sharedRoofMat);
+  roof.position.set(i * 12, h + 0.6, -28);
+  menuScene.add(roof);
 }
 
 const menuCars = [];
@@ -905,6 +977,18 @@ for (let i = 0; i < 4; i++) {
   const mat = new THREE.MeshStandardMaterial({ color: new THREE.Color().setHSL(Math.random(), 0.8, 0.5), roughness: 0.4 });
   const body = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.9, 4.5), mat); body.position.y = 0.75; g.add(body);
   const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.8, 2.2), new THREE.MeshStandardMaterial({color:0x9fd2ff})); cabin.position.set(0, 1.5, -0.2); g.add(cabin);
+  const wheelGroups = [];
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+    const wg = new THREE.Group();
+    wg.position.set(sx * 1.1, 0.45, sz * 1.5);
+    g.add(wg);
+    const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.4, 8), new THREE.MeshStandardMaterial({color:0x111, roughness:0.9}));
+    wheel.rotation.z = Math.PI / 2; wg.add(wheel);
+    const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 0.42, 6), new THREE.MeshStandardMaterial({color:0xcccccc, roughness:0.4, metalness:0.6}));
+    rim.rotation.z = Math.PI / 2; wg.add(rim);
+    wheelGroups.push(wg);
+  }
+  g.userData.wheels = wheelGroups;
   g.position.set((Math.random()-0.5)*80, 0, -15); g.rotation.y = Math.random() > 0.5 ? 0 : Math.PI;
   g.userData.speed = 10 + Math.random() * 10; g.userData.dir = g.rotation.y === 0 ? 1 : -1;
   menuScene.add(g); menuCars.push(g);
@@ -973,7 +1057,6 @@ gameScene.add(new THREE.Mesh(skyGeo, skyMat));
 const hemiLight = new THREE.HemisphereLight(0xdff0ff, 0x6b7280, 1.0);
 gameScene.add(hemiLight);
 
-// Отключены тени и PointLight
 const sun = new THREE.DirectionalLight(0xfff4d6, 1.0);
 sun.position.set(50, 100, 30);
 gameScene.add(sun);
@@ -989,7 +1072,7 @@ const gameCam = new THREE.PerspectiveCamera(60, W / H, 0.1, 700);
 const staticGeos = { 
   roadBase: [], roadLines: [], crosswalks: [], sidewalk: [], parkPath: [], 
   treeTrunk: [], treeCrown: [], lampPole: [], lampHead: [], bench: [], busStop: [],
-  buildings: []
+  buildings: [], roofs: []
 };
 
 const groundTex = makeGrassTexture(); groundTex.repeat.set(60, 60);
@@ -1084,21 +1167,22 @@ function queueBusStop(x, z, rot) {
 const BLOCK = GRID - ROADW;
 const buildingWindowMats = [];
 
-// КЛЮЧЕВАЯ ОПТИМИЗАЦИЯ: используем ОДНУ общую текстуру и МЕРЖИМ здания в 1 меш
 const sharedBuildingMat = new THREE.MeshStandardMaterial({ 
   color: 0xffffff, map: winTexShared, emissiveMap: winEmissiveShared, emissive: 0xffffff, emissiveIntensity: 0,
   roughness: 0.88 
 });
 buildingWindowMats.push(sharedBuildingMat);
 
+// ЗДАНИЕ + КРЫША
 function queueBuilding(cx, cz, w, d, h) {
   const bGeo = new THREE.BoxGeometry(w, h, d); bGeo.translate(cx, h / 2, cz);
   staticGeos.buildings.push(bGeo);
-  // Крыша как отдельная геометрия — пойдёт в тот же массив с другим цветом
-  buildingColliders.push({ minX: cx - w / 2, maxX: cx + w / 2, minZ: cz - d / 2, maxZ: cz + d / 2, maxY: h + 1.0 });
+  // Крыша (плоский парапет, немного шире здания)
+  const roofGeo = new THREE.BoxGeometry(w + 1.0, 1.2, d + 1.0); roofGeo.translate(cx, h + 0.6, cz);
+  staticGeos.roofs.push(roofGeo);
+  buildingColliders.push({ minX: cx - w / 2, maxX: cx + w / 2, minZ: cz - d / 2, maxZ: cz + d / 2, maxY: h + 1.2 });
 }
 
-// Уменьшили количество объектов: 4x4 квартала вместо 6x6
 for (let bi = 0; bi < roadCoords.length - 1; bi++) {
   for (let bj = 0; bj < roadCoords.length - 1; bj++) {
     const a = roadCoords[bi], b = roadCoords[bi + 1];
@@ -1156,10 +1240,11 @@ mergeAndAdd(staticGeos.lampPole, new THREE.MeshStandardMaterial({ color: 0x2a2a2
 mergeAndAdd(staticGeos.lampHead, new THREE.MeshStandardMaterial({ color: 0xfff3c4, emissive: 0xffe87a, emissiveIntensity: 0 }));
 mergeAndAdd(staticGeos.bench, new THREE.MeshStandardMaterial({ color: 0x8b5a2b }));
 mergeAndAdd(staticGeos.busStop, new THREE.MeshStandardMaterial({ color: 0x3498db }));
-// ВСЕ здания в ОДИН меш = 1 draw call!
 mergeAndAdd(staticGeos.buildings, sharedBuildingMat);
+// КРЫШИ отдельным мешем
+mergeAndAdd(staticGeos.roofs, new THREE.MeshStandardMaterial({ color: 0x5a6270, roughness: 0.95 }));
 
-// Облака (меньше)
+// Облака
 const cloudMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 1, transparent: true, opacity: 0.9, fog: false });
 for (let i = 0; i < 8; i++) {
   const g = new THREE.Group();
@@ -1181,7 +1266,39 @@ for (let f = 0; f < 3; f++) {
   flocks.push(flock);
 }
 
-// Машины (12 вместо 25)
+// САМОЛЁТЫ - теперь они ЛЕТЯТ
+const planes = [];
+for (let i = 0; i < 3; i++) {
+  const g = new THREE.Group();
+  const bodyMat = new THREE.MeshStandardMaterial({ color: 0xf0f0f0, roughness: 0.4, metalness: 0.3 });
+  const wingMat = new THREE.MeshStandardMaterial({ color: 0xdddddd, roughness: 0.5 });
+  
+  // Корпус
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 10, 6), bodyMat);
+  body.rotation.x = Math.PI / 2; g.add(body);
+  // Нос
+  const nose = new THREE.Mesh(new THREE.ConeGeometry(0.8, 2, 6), bodyMat);
+  nose.rotation.x = -Math.PI / 2; nose.position.z = 6; g.add(nose);
+  // Крылья
+  const wings = new THREE.Mesh(new THREE.BoxGeometry(14, 0.2, 2.5), wingMat);
+  wings.position.z = 0.5; g.add(wings);
+  // Хвост
+  const tail = new THREE.Mesh(new THREE.BoxGeometry(4, 0.2, 1), wingMat);
+  tail.position.z = -4; g.add(tail);
+  // Хвостовой плавник
+  const fin = new THREE.Mesh(new THREE.BoxGeometry(0.2, 2, 1.5), wingMat);
+  fin.position.set(0, 1, -4); g.add(fin);
+  
+  const speed = 25 + Math.random() * 20;
+  const y = 100 + Math.random() * 60;
+  const z = (Math.random() - 0.5) * 600;
+  g.position.set(-600, y, z);
+  g.rotation.y = Math.PI / 2; // смотрит вправо (вдоль +X)
+  gameScene.add(g);
+  planes.push({ mesh: g, speed, y, z });
+}
+
+// МАШИНЫ - теперь с КРУТЯЩИМИСЯ колёсами и ободами
 const CAR_COLORS = [0xe74c3c, 0x3498db, 0x2ecc71, 0xf1c40f, 0x9b59b6, 0xecf0f1, 0x34495e, 0xe67e22, 0xd35400];
 const cars = [];
 function makeCar() {
@@ -1189,6 +1306,28 @@ function makeCar() {
   const mat = new THREE.MeshStandardMaterial({ color: CAR_COLORS[Math.floor(Math.random() * CAR_COLORS.length)], roughness: 0.35, metalness: 0.4 });
   const bodyM = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.8, 4.5), mat); bodyM.position.y = 0.7; g.add(bodyM);
   const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.9, 0.7, 2.0), new THREE.MeshStandardMaterial({ color: 0x9fd2ff, roughness: 0.1, metalness: 0.7 })); cabin.position.set(0, 1.4, -0.2); g.add(cabin);
+  
+  // Колёса с ободами
+  const wheelGroups = [];
+  const wheelMat = new THREE.MeshStandardMaterial({color:0x111111, roughness:0.9});
+  const rimMat = new THREE.MeshStandardMaterial({color:0xcccccc, roughness:0.35, metalness:0.7});
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+    const wg = new THREE.Group();
+    wg.position.set(sx * 1.1, 0.45, sz * 1.5);
+    g.add(wg);
+    
+    const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 0.35, 10), wheelMat);
+    wheel.rotation.z = Math.PI / 2;
+    wg.add(wheel);
+    
+    const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.37, 6), rimMat);
+    rim.rotation.z = Math.PI / 2;
+    wg.add(rim);
+    
+    wheelGroups.push(wg);
+  }
+  g.userData.wheels = wheelGroups;
+  
   const headMat = new THREE.MeshStandardMaterial({ color: 0xfff8cc, emissive: 0xffe87a, emissiveIntensity: 0 });
   const headL = new THREE.Mesh(new THREE.SphereGeometry(0.2, 4, 3), headMat); headL.position.set(-0.7, 0.7, 2.3); g.add(headL);
   const headR = new THREE.Mesh(new THREE.SphereGeometry(0.2, 4, 3), headMat); headR.position.set(0.7, 0.7, 2.3); g.add(headR);
@@ -1207,13 +1346,27 @@ for (let i = 0; i < 12; i++) {
   gameScene.add(mesh); cars.push(car);
 }
 
-// Автобусы (2)
+// Автобусы
 const buses = [];
 for (let i = 0; i < 2; i++) {
   const g = new THREE.Group();
   const mat = new THREE.MeshStandardMaterial({ color: 0xffaa00, roughness: 0.4 });
   const body = new THREE.Mesh(new THREE.BoxGeometry(2.6, 2.2, 9), mat); body.position.y = 1.5; g.add(body);
   const windows = new THREE.Mesh(new THREE.BoxGeometry(2.65, 0.8, 7), new THREE.MeshStandardMaterial({color:0x9fd2ff})); windows.position.set(0, 2.45, 0); g.add(windows);
+  
+  const wheelGroups = [];
+  for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+    const wg = new THREE.Group();
+    wg.position.set(sx * 1.2, 0.6, sz * 3);
+    g.add(wg);
+    const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.6, 0.6, 0.5, 8), new THREE.MeshStandardMaterial({color:0x111}));
+    wheel.rotation.z = Math.PI / 2; wg.add(wheel);
+    const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 0.52, 6), new THREE.MeshStandardMaterial({color:0xcccccc, metalness:0.6, roughness:0.4}));
+    rim.rotation.z = Math.PI / 2; wg.add(rim);
+    wheelGroups.push(wg);
+  }
+  g.userData.wheels = wheelGroups;
+  
   const alongZ = i % 2 === 0;
   const roadC = roadCoords[Math.floor(Math.random() * roadCoords.length)];
   const dirSign = Math.random() > 0.5 ? 1 : -1;
@@ -1228,7 +1381,7 @@ for (let bi = 0; bi < roadCoords.length - 1; bi++) {
   }
 }
 
-// Люди (15)
+// Люди
 const people = [];
 for (let i = 0; i < 15; i++) {
   const mesh = makePerson();
@@ -1241,14 +1394,6 @@ for (let i = 0; i < 15; i++) {
   if (alongZ) { mesh.position.set(roadC + offset, 0, (Math.random() * 2 - 1) * WORLD); mesh.rotation.y = dirSign > 0 ? 0 : Math.PI; }
   else { mesh.position.set((Math.random() * 2 - 1) * WORLD, 0, roadC + offset); mesh.rotation.y = dirSign > 0 ? Math.PI / 2 : -Math.PI / 2; }
   gameScene.add(mesh); people.push(p);
-}
-
-// Самолёты
-for (let i = 0; i < 2; i++) {
-  const g = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.CylinderGeometry(0.8, 0.8, 10, 4), new THREE.MeshStandardMaterial({ color: 0xf0f0f0 })); body.rotation.x = Math.PI / 2; g.add(body);
-  const wings = new THREE.Mesh(new THREE.BoxGeometry(14, 0.2, 2.5), new THREE.MeshStandardMaterial({color:0xdddddd})); wings.position.z = 0.5; g.add(wings);
-  g.position.set(-600, 150 + Math.random() * 50, (Math.random()-0.5)*600); g.rotation.y = Math.PI / 2; gameScene.add(g);
 }
 
 let gamePigeonObj = null, gamePigeon = null;
@@ -1274,7 +1419,6 @@ function buildGamePigeon() {
 }
 buildGamePigeon();
 
-// NPC голуби (6)
 const npcPigeons = [];
 function spawnNpcPigeon() {
   const pObj = makePigeon({ body: 0x888888, accent: 0x555555, id: 'npc' });
@@ -1557,7 +1701,6 @@ document.getElementById('btnApplyCheat').onclick = () => {
   const code = document.getElementById('cheatInput').value.trim().toLowerCase();
   let msg = '';
   
-  // Скины через коды
   const skinCodes = {
     'camo': 'camo', 'galaxy': 'galaxy', 'rainbow': 'rainbow', 'zebra': 'zebra',
     'leopard': 'leopard', 'checker': 'checker', 'lava': 'lava', 'ice': 'ice', 'wood': 'wood',
@@ -1816,7 +1959,14 @@ function updateMenu(dt) {
   menuPigeon.scale.set(1.35 * (1 + Math.sin(t * 2.2) * 0.012), 1.35, 1.35 * (1 + Math.sin(t * 2.2) * 0.012));
   menuPigeonObj.lwing.rotation.z = 1.25; menuPigeonObj.rwing.rotation.z = -1.25;
 
-  for (const c of menuCars) { c.position.x += c.userData.speed * c.userData.dir * dt; if (c.position.x > 60) c.position.x = -60; if (c.position.x < -60) c.position.x = 60; }
+  for (const c of menuCars) { 
+    c.position.x += c.userData.speed * c.userData.dir * dt; 
+    if (c.position.x > 60) c.position.x = -60; 
+    if (c.position.x < -60) c.position.x = 60;
+    if (c.userData.wheels) {
+      c.userData.wheels.forEach(w => { w.rotation.x += c.userData.speed * dt / 0.45 * c.userData.dir; });
+    }
+  }
   for (const p of menuPeople) {
     p.position.x += p.userData.speed * p.userData.dir * dt; if (p.position.x > 50) p.position.x = -50; if (p.position.x < -50) p.position.x = 50;
     p.userData.legL.rotation.x = Math.sin(t * 8) * 0.6; p.userData.legR.rotation.x = -Math.sin(t * 8) * 0.6;
@@ -2010,6 +2160,16 @@ function updateGame(dt) {
   poopCooldown -= dt;
   if ((poopBtnDown || keys['KeyE']) && poopCooldown <= 0 && (infiniteAmmo || ammo >= 1) && !sitting) { firePoop(); poopCooldown = 0.18; }
 
+  // САМОЛЁТЫ ЛЕТЯТ
+  for (const p of planes) {
+    p.mesh.position.x += p.speed * dt;
+    if (p.mesh.position.x > 600) {
+      p.mesh.position.x = -600;
+      p.mesh.position.z = (Math.random() - 0.5) * 600;
+      p.mesh.position.y = 100 + Math.random() * 60;
+    }
+  }
+
   for (const b of buses) {
     if (b.stopTimer > 0) b.stopTimer -= dt;
     else {
@@ -2021,11 +2181,21 @@ function updateGame(dt) {
         else { b.mesh.position.x += b.dirSign * b.speed * dt; if (b.mesh.position.x > WORLD + 20) b.mesh.position.x = -WORLD - 20; if (b.mesh.position.x < -WORLD - 20) b.mesh.position.x = WORLD + 20; }
       }
     }
+    // Колёса автобуса
+    if (b.mesh.userData.wheels && b.stopTimer <= 0) {
+      b.mesh.userData.wheels.forEach(w => { w.rotation.x += b.speed * dt / 0.6 * b.dirSign; });
+    }
   }
 
+  // МАШИНЫ С КРУТЯЩИМИСЯ КОЛЁСАМИ
   for (const car of cars) {
     if (car.alongZ) { car.mesh.position.z += car.dirSign * car.speed * dt; if (car.mesh.position.z > WORLD + 20) car.mesh.position.z = -WORLD - 20; if (car.mesh.position.z < -WORLD - 20) car.mesh.position.z = WORLD + 20; }
     else { car.mesh.position.x += car.dirSign * car.speed * dt; if (car.mesh.position.x > WORLD + 20) car.mesh.position.x = -WORLD - 20; if (car.mesh.position.x < -WORLD - 20) car.mesh.position.x = WORLD + 20; }
+    // Крутим колёса
+    if (car.mesh.userData.wheels) {
+      const wheelDelta = car.speed * dt / 0.45 * car.dirSign;
+      car.mesh.userData.wheels.forEach(w => { w.rotation.x += wheelDelta; });
+    }
   }
 
   for (const p of people) {
@@ -2118,7 +2288,6 @@ animate();
 
 skinsPanel.classList.remove('open'); upPanel.classList.remove('open'); lbPanel.classList.remove('open'); cheatPanel.classList.remove('open'); savePanel.classList.remove('open');
 renderSkins(); renderUpgrades();
-document.addEventListener('contextmenu', e => e.preventDefault());
 </script>
 </body>
 </html>
